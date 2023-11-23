@@ -1,14 +1,14 @@
 # clean-ocr
-Select image -> draw over zone of interest (drag&drop) -> get text.
+Open image -> draw over zone of interest (drag&drop) -> get text.
 
 Sometimes you just don't need to scan the whole image. </br>
 And cut it into another file is a bit annoying. </br>
+So use this script. </br>
 
 ***work in progress***
 
 ESCAPE KEY &nbsp; &nbsp; &nbsp; &nbsp;-> close </br>
-SPACE BAR KEY &nbsp; -> cut </br>
-ENTER KEY &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;-> get text </br>
+ENTER KEY &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;-> get text from selected area </br>
 
 # Uses Tesseract OCR 
 Project: https://github.com/tesseract-ocr/tesseract </br>
