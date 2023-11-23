@@ -2,21 +2,14 @@ import cv2
 import numpy as np
 import imutils
 
-class Rectangulo():
-    pass
 
 drawing = False
 mode = True
 initial_x, initial_y = -1,-1
 ultimate_x, ultimate_y = 0,0
-descartable = Rectangulo
 
 def draw_rect(event,final_x,final_y,flags,param):
-    """
-    debemos capturar las coordenadas dibujadas y aplicar:
-    cropImg = rightImg[y:x, y+h:x+w]
-    """
-    #global initial_x, initial_y, drawing, mode, cache
+
     global initial_x, initial_y, drawing, mode, ultimate_x, ultimate_y
 
     if event == cv2.EVENT_LBUTTONDOWN:
@@ -44,7 +37,6 @@ def draw_rect(event,final_x,final_y,flags,param):
         # El rectangulo termino
         drawing = False
         if mode == True:
-            #del descartable
             cv2.rectangle(img_resize,(initial_x,initial_y),(final_x,final_y),(255,255,50), thickness=2) # CAPTURA FINAL
             ultimate_x, ultimate_y = final_x, final_y
             print(f"Initial points: {initial_x},{initial_y}")
@@ -59,13 +51,8 @@ img = cv2.imread(img_path)
 cv2.namedWindow('image')
 img_resize = imutils.resize(img, height=950)
 
-
-#final_img = cv2.addWeighted(img, 0.4, canvas, 0.1,0)
-#cache = img.copy()
 y=0
 x=0
-h=ultimate_y
-w=ultimate_x
 while(1):
 
     cv2.setMouseCallback('image', draw_rect)
@@ -81,4 +68,3 @@ while(1):
     
     
 cv2.destroyAllWindows()
-
