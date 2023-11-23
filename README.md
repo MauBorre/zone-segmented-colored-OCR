@@ -5,4 +5,4 @@ work in progress
 
 ESCAPE KEY &nbsp;&nbsp;&nbsp; -> close </br>
 SPACE BAR KEY &nbsp;-> cut </br>
-ENTER KEY &nbsp;&nbsp;&nbsp;&nbsp; -> get text </br>
+ENTER KEY &nbsp; &nbsp; &nbsp;&nbsp;-> get text </br>
