@@ -4,46 +4,32 @@ import imutils
 import pytesseract
 import tkinter as tk
 from tkinter import scrolledtext
+import sys
 
+#TODO: be able to visualize the selection as we drag it
+#TODO: color non alphabetic characters
+#TODO: accept path-to-image as script argument
 
-"""Rectangle drawing procedure"""
+class Rectangles:
+    """Utility for multiple OCR reads"""
+
+    drawn_rectangles = []
+
+    def __init__(self, initial_x, initial_y, ultimate_x, ultimate_y):
+        self.init_x = initial_x
+        self.init_y = initial_y
+        self.ult_x = ultimate_x
+        self.ult_y = ultimate_y
+        Rectangles.drawn_rectangles.append(self)
+        print(f"drawn rectangles: {len(Rectangles.drawn_rectangles)}")
+
+"""Rectangle drawing pre-requisites"""
 drawing = False
 mode = True
 initial_x, initial_y = 0,0
 ultimate_x, ultimate_y = 0,0
 
-def draw_rect(event,final_x,final_y,flags,param):
-
-    global initial_x, initial_y, drawing, mode, ultimate_x, ultimate_y
-
-    if event == cv2.EVENT_LBUTTONDOWN:
-        """Rectangle start"""
-        drawing = True
-        initial_x,initial_y = final_x,final_y
-    
-    #TODO: be able to visualize the rectangle while we drag it
-    
-    #elif event == cv2.EVENT_MOUSEMOVE:
-        #if drawing == True:
-            #if mode == True:
-                #cv2.rectangle(cache,(initial_x,initial_y),(final_x,final_y),(0,255,0), thickness=2)
-                #a=final_x
-                #b=final_y
-                #if a != final_x | b != final_y: # Es el interior del rectangulo
-                    # "transparentar"
-                    # cv2.rectangle(img,(initial_x,initial_y),(final_x,final_y),(), -1)
-    
-    elif event == cv2.EVENT_LBUTTONUP:
-        """Rectangle finish"""
-        drawing = False
-        if mode == True:
-            cv2.rectangle(img_resize,(initial_x,initial_y),(final_x,final_y),(255,255,50), thickness=2)
-            ultimate_x, ultimate_y = final_x, final_y
-            print(f"Initial points: {initial_x},{initial_y}")
-            print(f"Final points: {ultimate_x},{ultimate_y}")
-
-
-"""Image path and resizing utility"""
+"""Image path and resizing"""
 img_path = "./image.jpg"
 cv2.namedWindow('image')
 img = cv2.imread(img_path)
@@ -60,8 +46,6 @@ root = tk.Tk()
 def close_window(event=None):
     root.destroy()
 root.bind('<Escape>', close_window)
-text_widget = scrolledtext.ScrolledText(root)
-text_widget.pack()
 
 """Necessary tesseract config"""
 # If you don't have tesseract executable in your PATH, include the following:
@@ -70,6 +54,33 @@ pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tessera
 
 def main_loop():
 
+    
+    def draw_rect(event,final_x,final_y,flags,param):
+        """We need this func inside the main_loop so we can restart in case of a wrongly drawn area"""
+
+        global initial_x, initial_y, drawing, mode, ultimate_x, ultimate_y
+
+        if event == cv2.EVENT_LBUTTONDOWN:
+            """Rectangle start"""
+            drawing = True
+            initial_x,initial_y = final_x,final_y
+        
+        elif event == cv2.EVENT_LBUTTONUP:
+            """Rectangle finish"""
+            drawing = False
+            if mode == True:
+                cv2.rectangle(img_resize,(initial_x,initial_y),(final_x,final_y),(255,255,50), thickness=2)
+                ultimate_x, ultimate_y = final_x, final_y
+                print(
+                    f"Initial points: {initial_x},{initial_y} ||"
+                    f"Final points: {ultimate_x},{ultimate_y}")
+                Rectangles(initial_x, initial_y, ultimate_x, ultimate_y)
+
+    print("start")
+    cv2.destroyAllWindows()
+    cv2.namedWindow('image')
+    img_resize = imutils.resize(img, height=1000)
+
     while(1):
 
         cv2.setMouseCallback('image', draw_rect)
@@ -77,27 +88,30 @@ def main_loop():
         k = cv2.waitKey(1) & 0xFF
 
         if k == 27: # ESCAPE KEY
-            break
+            sys.exit()
 
         if k == 13: # ENTER KEY
             print("OCR'ing...")
-            try:
-                cropImg = img_resize[initial_y:y+ultimate_y, initial_x:x+ultimate_x]
-                text = pytesseract.image_to_string(cropImg)
-                text_widget.insert(tk.END, text)
-                root.mainloop()
-                
-            except:
+            if len(Rectangles.drawn_rectangles) == 0:
+                text_widget = scrolledtext.ScrolledText(root)
                 text = pytesseract.image_to_string(img_resize)
                 text_widget.insert(tk.END, text)
-                root.mainloop()
-                
-            # start_clean_again()
+                text_widget.pack() 
+            else:
+                for rectangle in Rectangles.drawn_rectangles:
+                    cropImg = img_resize[rectangle.init_y:y+rectangle.ult_y, rectangle.init_x:x+rectangle.ult_x]
+                    text = pytesseract.image_to_string(cropImg)
+                    text_widget = scrolledtext.ScrolledText(root, height=10)
+                    text_widget.insert(tk.END, text)
+                    text_widget.pack()        
+
+            root.mainloop()
+            break
 
         if k == 8: # BACKSPACE KEY
+            """Restart from clean image"""
             print("returning...")
-            # TODO: erease the rectangle or restart
-            #main_loop()
+            main_loop()
             
 
 main_loop()
