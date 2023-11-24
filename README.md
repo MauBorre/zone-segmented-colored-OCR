@@ -5,7 +5,8 @@ Sometimes you just don't need to scan the whole image. </br>
 And cut it into another file is a bit annoying. </br>
 So use this script. </br>
 
-## Usage:
+## Usage
+Download the whole project and...
 ```pip install requirements.txt```
 
 ESCAPE KEY &nbsp; &nbsp; &nbsp; &nbsp;-> close </br>
