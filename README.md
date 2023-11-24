@@ -8,7 +8,7 @@ So use this script. </br>
 ## Usage
 1 - Download the whole project </br>
 2 - Open the terminal at the project's folder </br>
-run ```pip install requirements.txt``` </br>
+run ```pip install -r requirements.txt``` </br>
 
 run ```python clean-ocr.py $path_to_your_image_here``` </br>
 
