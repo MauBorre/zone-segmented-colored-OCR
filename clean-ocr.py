@@ -7,8 +7,9 @@ from tkinter import scrolledtext
 import sys
 
 #TODO: be able to visualize the selection as we drag it
-#TODO: color non alphabetic characters
 #TODO: accept path-to-image as script argument
+
+
 
 class Rectangles:
     """Utility for multiple OCR reads"""
@@ -22,6 +23,10 @@ class Rectangles:
         self.ult_y = ultimate_y
         Rectangles.drawn_rectangles.append(self)
         print(f"drawn rectangles: {len(Rectangles.drawn_rectangles)}")
+
+    @classmethod
+    def clear(cls):
+        cls.drawn_rectangles.clear()
 
 """Rectangle drawing pre-requisites"""
 drawing = False
@@ -54,7 +59,8 @@ pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tessera
 
 def main_loop():
 
-    
+    Rectangles.clear() # Necessary for subsequent restarts.
+
     def draw_rect(event,final_x,final_y,flags,param):
         """We need this func inside the main_loop so we can restart in case of a wrongly drawn area"""
 
@@ -96,13 +102,60 @@ def main_loop():
                 text_widget = scrolledtext.ScrolledText(root)
                 text = pytesseract.image_to_string(img_resize)
                 text_widget.insert(tk.END, text)
-                text_widget.pack() 
+                
+                #### COLOR
+                for line_index, line in enumerate(text.splitlines()):
+                    for letter_index, letter in enumerate(line):
+                        if letter.isdigit():
+                            start = f"{line_index + 1}.{letter_index}"
+                            end = f"{line_index + 1}.{letter_index + 1}"
+                            text_widget.tag_add("highlight_number", start, end)
+                        
+                        if letter == "$":
+                            start = f"{line_index + 1}.{letter_index}"
+                            end = f"{line_index + 1}.{letter_index + 1}"
+                            text_widget.tag_add("highlight_$", start, end)
+
+                        if not letter.isalpha():
+                            start = f"{line_index + 1}.{letter_index}"
+                            end = f"{line_index + 1}.{letter_index + 1}"
+                            text_widget.tag_add("highlight", start, end)
+                ####
+
+                text_widget.tag_configure("highlight", foreground="red")
+                text_widget.tag_configure("highlight_number", foreground="blue")
+                text_widget.tag_configure("highlight_$", foreground="green")
+                text_widget.pack()
+
             else:
                 for rectangle in Rectangles.drawn_rectangles:
                     cropImg = img_resize[rectangle.init_y:y+rectangle.ult_y, rectangle.init_x:x+rectangle.ult_x]
-                    text = pytesseract.image_to_string(cropImg)
                     text_widget = scrolledtext.ScrolledText(root, height=10)
+                    text = pytesseract.image_to_string(cropImg)
                     text_widget.insert(tk.END, text)
+
+                    #### COLOR
+                    for line_index, line in enumerate(text.splitlines()):
+                        for letter_index, letter in enumerate(line):
+                            if letter.isdigit():
+                                start = f"{line_index + 1}.{letter_index}"
+                                end = f"{line_index + 1}.{letter_index + 1}"
+                                text_widget.tag_add("highlight_number", start, end)
+                            
+                            if letter == "$":
+                                start = f"{line_index + 1}.{letter_index}"
+                                end = f"{line_index + 1}.{letter_index + 1}"
+                                text_widget.tag_add("highlight_$", start, end)
+
+                            if not letter.isalpha():
+                                start = f"{line_index + 1}.{letter_index}"
+                                end = f"{line_index + 1}.{letter_index + 1}"
+                                text_widget.tag_add("highlight", start, end)
+                    ####
+
+                    text_widget.tag_configure("highlight", foreground="red")
+                    text_widget.tag_configure("highlight_number", foreground="blue")
+                    text_widget.tag_configure("highlight_$", foreground="green")
                     text_widget.pack()        
 
             root.mainloop()
@@ -112,6 +165,7 @@ def main_loop():
             """Restart from clean image"""
             print("returning...")
             main_loop()
+            break
             
 
 main_loop()
