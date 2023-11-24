@@ -9,6 +9,7 @@ So use this script. </br>
 
 ESCAPE KEY &nbsp; &nbsp; &nbsp; &nbsp;-> close </br>
 ENTER KEY &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;-> get text from selected area </br>
+BACKSPACE KEY  &nbsp;  &nbsp;  &nbsp;  -> start again</br>
 
 # Uses Tesseract OCR 
 Project: https://github.com/tesseract-ocr/tesseract </br>
