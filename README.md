@@ -11,6 +11,7 @@ So use this script. </br>
 run ```pip install -r requirements.txt``` </br>
 
 run ```python clean-ocr.py $path_to_your_image_here``` </br>
+example -> ```python clean-ocr.py C:\users\image.jpg``` </br>
 
 After your image is loaded, drag and drop forming as many rectangles as you like, selecting the zones of interest </br>
 
