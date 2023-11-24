@@ -11,6 +11,9 @@ import os
 
 """Image path and resizing"""
 img_path = sys.argv[1]
+if not os.path.exists(img_path):
+    print("Enter a valid path.")
+    sys.exit()
 cv2.namedWindow('image')
 img = cv2.imread(img_path)
 img_resize = imutils.resize(img, height=1000)
@@ -20,7 +23,6 @@ x=0
 """Utility for multiple OCR reads"""
 class Rectangles:
     
-
     drawn_rectangles = []
 
     def __init__(self, initial_x, initial_y, ultimate_x, ultimate_y):
@@ -85,7 +87,7 @@ def main_loop():
     print("start")
     cv2.destroyAllWindows()
     cv2.namedWindow('image')
-    img_resize = imutils.resize(img, height=1000)
+    img_resize = imutils.resize(img, height=800, width=900)
 
     while(1):
 
