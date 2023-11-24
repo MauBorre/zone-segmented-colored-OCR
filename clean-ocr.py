@@ -5,14 +5,21 @@ import pytesseract
 import tkinter as tk
 from tkinter import scrolledtext
 import sys
+import os
 
 #TODO: be able to visualize the selection as we drag it
-#TODO: accept path-to-image as script argument
 
+"""Image path and resizing"""
+img_path = sys.argv[1]
+cv2.namedWindow('image')
+img = cv2.imread(img_path)
+img_resize = imutils.resize(img, height=1000)
+y=0
+x=0
 
-
+"""Utility for multiple OCR reads"""
 class Rectangles:
-    """Utility for multiple OCR reads"""
+    
 
     drawn_rectangles = []
 
@@ -28,19 +35,12 @@ class Rectangles:
     def clear(cls):
         cls.drawn_rectangles.clear()
 
+
 """Rectangle drawing pre-requisites"""
 drawing = False
 mode = True
 initial_x, initial_y = 0,0
 ultimate_x, ultimate_y = 0,0
-
-"""Image path and resizing"""
-img_path = "./image.jpg"
-cv2.namedWindow('image')
-img = cv2.imread(img_path)
-img_resize = imutils.resize(img, height=1000)
-y=0
-x=0
 
 """Canvas for overlay. Unused yet"""
 canvas = np.zeros_like(img_resize, dtype=np.uint8)
