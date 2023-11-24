@@ -21,6 +21,8 @@ ESCAPE KEY &nbsp; &nbsp; &nbsp; &nbsp;-> close </br>
 ENTER KEY &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;-> get text from selected area </br>
 BACKSPACE KEY  &nbsp; -> start again</br>
 
+![alt text](https://github.com/MauBorre/clean-ocr/blob/main/example.png?raw=true)
+
 # Uses Tesseract OCR 
 Project: https://github.com/tesseract-ocr/tesseract </br>
 Windows installer: https://github.com/UB-Mannheim/tesseract/wiki </br>
