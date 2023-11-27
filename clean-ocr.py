@@ -177,5 +177,5 @@ cv2.destroyAllWindows()
 Might be useful later on...
 if k == 32: # SPACE BAR KEY
 if k == 13: # ENTER KEY
-if k == 8: # RETURN KEY
+if k == 8: # BACKSPACE KEY
 """
