@@ -50,6 +50,7 @@ canvas.fill(255)
 
 """TKinter init"""
 root = tk.Tk()
+root.title() = ("Text")
 def close_window(event=None):
     root.destroy()
 root.bind('<Escape>', close_window)
