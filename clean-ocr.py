@@ -9,7 +9,7 @@ import os
 
 #TODO: be able to visualize the selection as we drag it
 
-"""Image path and resizing"""
+# Image path and resizing
 img_path = sys.argv[1]
 if not os.path.exists(img_path):
     print("Enter a valid path.")
@@ -20,9 +20,8 @@ img_resize = imutils.resize(img, height=1000)
 y=0
 x=0
 
-"""Utility for multiple OCR reads"""
 class Rectangles:
-    
+    '''Utility for multiple OCR reads'''
     drawn_rectangles = []
 
     def __init__(self, initial_x, initial_y, ultimate_x, ultimate_y):
@@ -38,27 +37,25 @@ class Rectangles:
         cls.drawn_rectangles.clear()
 
 
-"""Rectangle drawing pre-requisites"""
+# Rectangle drawing pre-requisites
 drawing = False
 mode = True
 initial_x, initial_y = 0,0
 ultimate_x, ultimate_y = 0,0
 
-"""Canvas for overlay. Unused yet"""
+# Canvas for overlay. Unused yet.
 canvas = np.zeros_like(img_resize, dtype=np.uint8)
 canvas.fill(255)
 
-"""TKinter init"""
+# TKinter init
 root = tk.Tk()
 root.title() = ("Text")
 def close_window(event=None):
     root.destroy()
 root.bind('<Escape>', close_window)
 
-"""Necessary tesseract config"""
-# If you don't have tesseract executable in your PATH, include the following:
+# Necessary tesseract config
 pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract'
-# Example tesseract_cmd = r'C:\Program Files (x86)\Tesseract-OCR\tesseract'
 
 def main_loop():
 
@@ -69,13 +66,11 @@ def main_loop():
 
         global initial_x, initial_y, drawing, mode, ultimate_x, ultimate_y
 
-        if event == cv2.EVENT_LBUTTONDOWN:
-            """Rectangle start"""
+        if event == cv2.EVENT_LBUTTONDOWN: # Rectangle start
             drawing = True
             initial_x,initial_y = final_x,final_y
         
-        elif event == cv2.EVENT_LBUTTONUP:
-            """Rectangle finish"""
+        elif event == cv2.EVENT_LBUTTONUP: # Rectangle finish
             drawing = False
             if mode == True:
                 cv2.rectangle(img_resize,(initial_x,initial_y),(final_x,final_y),(255,255,50), thickness=2)
@@ -106,7 +101,7 @@ def main_loop():
                 text = pytesseract.image_to_string(img_resize)
                 text_widget.insert(tk.END, text)
                 
-                #### COLOR
+                # COLOR --------------------------------------------------------
                 for line_index, line in enumerate(text.splitlines()):
                     for letter_index, letter in enumerate(line):
                         if letter.isdigit():
@@ -123,7 +118,7 @@ def main_loop():
                             start = f"{line_index + 1}.{letter_index}"
                             end = f"{line_index + 1}.{letter_index + 1}"
                             text_widget.tag_add("highlight", start, end)
-                ####
+                # --------------------------------------------------------------
 
                 text_widget.tag_configure("highlight", foreground="red")
                 text_widget.tag_configure("highlight_number", foreground="blue")
@@ -137,7 +132,7 @@ def main_loop():
                     text = pytesseract.image_to_string(cropImg)
                     text_widget.insert(tk.END, text)
 
-                    #### COLOR
+                    # COLOR --------------------------------------------------------
                     for line_index, line in enumerate(text.splitlines()):
                         for letter_index, letter in enumerate(line):
                             if letter.isdigit():
@@ -154,7 +149,7 @@ def main_loop():
                                 start = f"{line_index + 1}.{letter_index}"
                                 end = f"{line_index + 1}.{letter_index + 1}"
                                 text_widget.tag_add("highlight", start, end)
-                    ####
+                    # --------------------------------------------------------------
 
                     text_widget.tag_configure("highlight", foreground="red")
                     text_widget.tag_configure("highlight_number", foreground="blue")
@@ -170,7 +165,6 @@ def main_loop():
             main_loop()
             break
             
-
 main_loop()
 cv2.destroyAllWindows()
 
