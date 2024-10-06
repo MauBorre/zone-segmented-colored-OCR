@@ -1,5 +1,5 @@
-python clean-ocr.py $path_to_your_image_here </br>
-python clean-ocr.py C:\users\image.jpg </br>
+```python clean-ocr.py $path_to_your_image_here``` </br>
+```python clean-ocr.py C:\users\image.jpg``` </br>
   click and drag selecting the zones of interest </br>
   Press enter </br>
 
