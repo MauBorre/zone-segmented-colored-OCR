@@ -1,5 +1,4 @@
-# clean-ocr
-Open image -> draw over zone of interest (drag&drop) -> get text.
+Open image -> draw over zones of interest (drag&drop) -> get text.
 
 Sometimes you just don't need to scan the whole image. </br>
 And cut it into another file is a bit annoying. </br>
