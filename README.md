@@ -1,7 +1,7 @@
-  > run ```python clean-ocr.py $path_to_your_image_here``` </br>
-  > ```python clean-ocr.py C:\users\image.jpg``` </br>
-click and drag selecting the zones of interest </br>
-Press enter </br>
+run ```python clean-ocr.py $path_to_your_image_here``` </br>
+```python clean-ocr.py C:\users\image.jpg``` </br>
+  click and drag selecting the zones of interest </br>
+  Press enter </br>
 
 ESCAPE KEY &nbsp; &nbsp; &nbsp; &nbsp;-> close </br>
 ENTER KEY &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;-> get text from selected areas </br>
